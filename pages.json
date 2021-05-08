@@ -1,0 +1,139 @@
+{
+	"pages": [
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/indexV2.0/indexV2.0",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/indexV1.0/indexV1.0",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/square/square",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/interest/interest",
+			"style": {
+				"navigationBarTitleText": "兴趣小组",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/upload/upload",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "&#xe607;",
+							"fontSrc": "/static/iconfont.ttf",
+							"fontSize": "16px",
+							"color": "#fff",
+							"float": "left"
+						}, {
+							"text": "发布",
+							"fontSize": "28rpx",
+							"width": "70px",
+							"color":"#1BBAE9"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/personCenter/personCenter",
+			"style": {
+				"navigationBarTitleText": "附近广场",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/activity/activity",
+			"style": {
+				"navigationBarTitleText": "活动列表",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/activityDetail/activityDetail",
+			"style": {
+				"navigationBarTitleText": "活动详情",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/edit/edit",
+			"style": {
+				"navigationBarTitleText": "编辑资料",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "&#xe607;",
+							"fontSrc": "/static/iconfont.ttf",
+							"fontSize": "16px",
+							"color": "#fff",
+							"float": "left"
+						}, {
+							"text": "确认",
+							"fontSize": "28rpx",
+							"width": "70px",
+							"color":"#1BBAE9"
+						}]
+					}
+				}
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "移动端政务",
+		"navigationBarBackgroundColor": "#ffffff",
+		"backgroundColor": "#ffffff"
+	}
+	// "tabBar": {
+	// 	"color": "#000000",
+	// 	"selectedColor": "#000000",
+	// 	"borderStyle": "black",
+	// 	"backgroundColor": "#ffffff",
+	// 	"fontSize": "14px",
+	// 	"list": [{
+	// 		"pagePath": "pages/indexV2.0/indexV2.0",
+	// 		"iconPath": "static/images/index/index-icon.png",
+	// 		"selectedIconPath": "static/images/index/index-icon-active.png",
+	// 		"text": "首页"
+	// 	}, {
+	// 		"pagePath": "pages/interaction/index/index",
+	// 		"iconPath": "static/images/index/hd-icon.png",
+	// 		"selectedIconPath": "static/images/index/hd-icon-active.png",
+	// 		"text": "互动"
+	// 	}, {
+	// 		"pagePath": "pages/personalCenter/homepage/homepage",
+	// 		"iconPath": "static/images/index/my-icon.png",
+	// 		"selectedIconPath": "static/images/index/my-icon-active.png",
+	// 		"text": "我的"
+	// 	}]
+	// }
+}

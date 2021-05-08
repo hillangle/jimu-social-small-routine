@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<title>
+			<%= htmlWebpackPlugin.options.title %>
+		</title>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				document.documentElement.style.fontSize = document.documentElement.clientWidth / 20 + 'px'
+			})
+		</script>
+		<link rel="stylesheet" href="<%= BASE_URL %>static/index.<%= VUE_APP_INDEX_CSS_HASH %>.css" />
+	</head>
+	<body>
+		<noscript>
+			<strong>Please enable JavaScript to continue.</strong>
+		</noscript>
+		<div id="app"></div>
+		<!-- built files will be auto injected -->
+	</body>
+	<script src="http://220.179.7.208:8082/coupon/js/croods-1.3.3.js"></script>
+	<script>
+		
+	
+		var attrUtl = '';
+		var model = 'prod'; //dev  现场 // prod 生产环境 // test 测试
+		var ngnixUrl;
+		var ctxUtl;
+		var attrUtl;
+		var projectUrl; // vue项目访问地址
+		// 大观消费券一期  首页地址
+		var daGuanIndex = '/coupons/conponsSignMain.html';
+		var healthUrl; // 安康码项目地址
+		if (model == 'dev') {
+			// 经开区消费券项目地址
+			ctxUtl = "http://220.179.5.94:10301/api/";
+			// 文件上传地址
+			attrUtl = "http://220.179.5.94:10301/api/";
+			// 其余静态资源地址
+			ngnixUrl = 'http://220.179.7.208:8082/';
+			// 安康码项目地址
+			healthUrl = 'http://220.179.7.130:8082/';
+		} else if (model == 'test') {
+			ctxUtl = "http://220.179.7.191:2048/api/";
+			attrUtl = "http://220.179.7.191:2048/api/";
+			healthUrl = 'http://220.179.7.169:8025/XCX/';
+			ngnixUrl = 'http://220.179.7.143:8084/';
+		} else if (model == 'prod') {
+			// 经开区消费券项目地址
+			ctxUtl = "http://192.168.1.113:10301/api/";
+			// 文件上传地址
+			attrUtl = "http://192.168.1.113:10301/api/";
+			// 安康码项目地址
+			healthUrl = 'http://192.168.1.113:7080/WebContent/';
+			ngnixUrl = 'http://192.168.1.113:8082/';
+			
+			projectUrl= 'http://192.168.1.113:8080/coupon/pages/';
+		}
+		var loginname = "";
+		var shopName = "";
+		var couponFlag = "";
+	</script>
+</html>
