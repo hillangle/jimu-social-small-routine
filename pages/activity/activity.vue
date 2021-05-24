@@ -2,65 +2,67 @@
 	<view class="container">
 		<view class="header">
 			<view class="title">活动列表</view>
-			<image src="~@/static/images/other/sx.png" mode="" class="pic"></image>
+			<!-- <image src="~@/static/images/other/sx.png" mode="" class="pic"></image> -->
 		</view>
-		<view class="list">
+		<view class="list" v-for="(item,index) in activitys" :key="index">
 			<view class="item">
-				<image src="~@/static/images/other/act01.png" mode="" class="pic"></image>
+				<image :src="item.img" mode="" class="pic"></image>
 				<view class="item-content">
-					<h2>#几乎一切：乔治·卡莫兰迪版画展#</h2>
-					<h3><b>时间：</b>2021.03.09周二</h3>
-					<h3><b>介绍：</b>杭州市西湖区装汤街道香山路354号中国美院16号楼中国国际设计博物馆2号展厅</h3>
-				</view>
-			</view>
-			<view class="item">
-				<image src="~@/static/images/other/act02.png" mode="" class="pic"></image>
-				<view class="item-content">
-					<h2>#几乎一切：乔治·卡莫兰迪版画展#</h2>
-					<h3><b>时间：</b>2021.03.09周二</h3>
-					<h3><b>介绍：</b>杭州市西湖区装汤街道香山路354号中国美院16号楼中国国际设计博物馆2号展厅</h3>
-				</view>
-			</view>
-			<view class="item">
-				<image src="~@/static/images/other/act03.png" mode="" class="pic"></image>
-				<view class="item-content">
-					<h2>#几乎一切：乔治·卡莫兰迪版画展#</h2>
-					<h3><b>时间：</b>2021.03.09周二</h3>
-					<h3><b>介绍：</b>杭州市西湖区装汤街道香山路354号中国美院16号楼中国国际设计博物馆2号展厅</h3>
+					<h2>{{ item.name }}</h2>
+					<h3><b>时间：</b>{{ item.activityTime }}</h3>
+					<h3><b>介绍：</b>{{ item.content }}</h3>
 				</view>
 			</view>
 		</view>
-		<view class="footer">
-			<view class="footer-content">
-				<view class="foot-item foot-item01 on">
-					<view class="foot-bg"></view>
-					<text>附近广场</text>
-				</view>
-				<view class="foot-item foot-middle">
-					<image src="~@/static/images/indexNew/center.png" mode=""></image>
-				</view>
-				<view class="foot-item foot-item02">
-					<view class="foot-bg"></view>
-					<text>活动</text>
-				</view>
-			</view>
-		</view>
+		<footerSocial/>
 	</view>
 </template>
 
 <script>
+import footerSocial from '@/components/footer/footer.vue'
+import {getActivityList} from '../../common/api/activity.js'
+import {Base64} from '../../js_sdk/js-base64/base64.js'
 
 export default {
 	data() {
 		return {
-			
+			query:{
+				status: ""
+			},
+			activitys:[]
 		};
 	},
 	components:{
-	        
+		footerSocial
 	},
 	methods: {
-		
+		getData(){
+			this.activitys = [];
+			this.query.status = '0';
+			getActivityList(this.query).then(res => {
+				if(res[1].data.httpCode == '200'){
+					let activitys = JSON.parse(res[1].data.resultData);
+					// var Base64 = require('js-base64').Base64;
+					for(let i = 0; activitys.length > i; i++){
+						let imgBase = uni.arrayBufferToBase64(new Uint8Array(activitys[i].img));
+						this.activitys.push({
+							"img":'data:image/png;base64,' + imgBase,
+							"name":activitys[i].name,
+							"activityTime":activitys[i].activityTime,
+							"content":activitys[i].content
+						});
+					}
+					console.log(this.activitys);
+				}else{
+					uni.navigateTo({
+						url: '/pages/login/login.vue'
+					})
+				}
+			})
+		}
+	},
+	onLoad(){
+		this.getData()
 	}
 };
 </script>

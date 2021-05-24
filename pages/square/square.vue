@@ -7,260 +7,241 @@
 					<view class="uni-input">{{array[index]}}</view>
 				</picker>
 			</view>
-			<view class="center">
-				<text class="on">全部</text>
-				<text>娱乐</text>
-				<text>酒吧</text>
-				<text>风景</text>
-				<text>美食</text>
-			</view>
-			<view class="fr"><image src="~@/static/images/other/more.png" mode="" class="pic"></image></view>
+			<scroll-view scroll-x="true" class="center">
+				<text @tap="changeGroup('all')">全部</text>
+				<text v-for="(item,index) in groups" :key="index" @tap="changeGroup(item.unid)">
+					{{item.name}}
+				</text>
+			</scroll-view>
+			<view class="fr"><image src="~@/static/images/other/more.png" mode="" class="pic" @tap="moreGroup"></image></view>
 		</view>
 		<view class="list">
-			<view class="list-content">
+			<view class="list-content" v-for="(item,index) in news" :key="index">
 				<view class="item">
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
+					<image :src="item.userImg" mode="" class="pic"></image>
 					<view class="item-content">
-						<h2>Rhoda Miller</h2>
-						<text><b>18岁</b><b>巨蟹座</b></text>
+						<h2>{{item.userName}}</h2>
+						<text><b>{{item.userAge}}岁</b><b>{{item.userConstellation}}</b></text>
 					</view>
 				</view>
-				<h3>今天天气很好，很适合拍照呢～</h3>
-				<view class="pic-photo">
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
+				<h3>{{item.title}}</h3>
+				<view class="pic-photo" v-for="(photo,index) in item.attas">
+					<image :src="photo.attaPath" mode="" class="pic"></image>
+					<!-- <image src="~@/static/images/other/interest01.png" mode="" class="pic"></image> -->
 				</view>
-				<view class="address">拱墅区</view>
+				<view class="address">{{item.address}}</view>
 				<view class="time">
-					<view class="time-fl">8秒以前</view>
+					<view class="time-fl">{{item.time}}</view>
 					<view class="time-fr">
-						<view class="view-pl"><image src="~@/static/images/other/pl01.png" mode="">26</image></view>
-						<view class="dz" @click="cancle">
-							<view class="dianzan" v-if="show">
+						<view class="view-pl"  @tap="pl(index,item)"><image src="~@/static/images/other/pl01.png" mode="">{{item.commentNum}}</image></view>
+						<view class="dz" @click="cancle(index,item)">
+							<view class="dianzan" v-if="item.show">
 								<text></text>
-								123
+								{{item.praiseNum}}
 							</view>
 							<view class="dianzan-no" v-else>
 								<text></text>
-								123
+								{{item.praiseNum}}
 							</view>
 						</view>
 					</view>
 				</view>
-				<view class="comment">
-					<view class="comment-item">
-						<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
+				<view class="comment" v-if="item.comments.length > 0">
+					<view class="comment-item" v-for="comment in item.comments">
+						<image :src="comment.commentUserImg" mode="" class="pic"></image>
 						<view class="comment-content">
-							<h2>#不怕黑大作战#</h2>
-							<text>17673参与</text>
+							<h2>{{comment.commentContent}}</h2>
+							<!-- <text>{{17673}}参与</text> -->
 						</view>
-						<view class="jr">上午10：50</view>
+						<view class="jr">{{comment.commentCreateDate}}</view>
 					</view>
-					<view class="comment-item">
-						<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-						<view class="comment-content">
-							<h2>#不怕黑大作战#</h2>
-							<text>17673参与</text>
-						</view>
-						<view class="jr">上午10：50</view>
-					</view>
-					<view class="comment-item">
-						<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-						<view class="comment-content">
-							<h2>#不怕黑大作战#</h2>
-							<text>17673参与</text>
-						</view>
-						<view class="jr">上午10：50</view>
-					</view>
-					<view class="more">更多消息</view>
-				</view>
-			</view>
-			<view class="list-content">
-				<view class="item">
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-					<view class="item-content">
-						<h2>Rhoda Miller</h2>
-						<text><b>18岁</b><b>巨蟹座</b></text>
-					</view>
-				</view>
-				<h3>今天天气很好，很适合拍照呢～</h3>
-				<view class="pic-photo">
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-				</view>
-				<view class="address">拱墅区</view>
-				<view class="time">
-					<view class="time-fl">8秒以前</view>
-					<view class="time-fr">
-						<view class="view-pl"><image src="~@/static/images/other/pl01.png" mode="">26</image></view>
-						<view class="dz" @click="cancle">
-							<view class="dianzan" v-if="show">
-								<text></text>
-								123
-							</view>
-							<view class="dianzan-no" v-else>
-								<text></text>
-								123
-							</view>
-						</view>
-					</view>
-				</view>
-			
-			</view>
-			<view class="list-content">
-				<view class="item">
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-					<view class="item-content">
-						<h2>Rhoda Miller</h2>
-						<text><b>18岁</b><b>巨蟹座</b></text>
-					</view>
-				</view>
-				<h3>今天天气很好，很适合拍照呢～</h3>
-				<view class="pic-photo">
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-				</view>
-				<view class="address">拱墅区</view>
-				<view class="time">
-					<view class="time-fl">8秒以前</view>
-					<view class="time-fr">
-						<view class="view-pl"><image src="~@/static/images/other/pl01.png" mode="">26</image></view>
-						<view class="dz" @click="cancle">
-							<view class="dianzan" v-if="show">
-								<text></text>
-								123
-							</view>
-							<view class="dianzan-no" v-else>
-								<text></text>
-								123
-							</view>
-						</view>
-					</view>
-				</view>
-			
-			</view>
-			<view class="list-content">
-				<view class="item">
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-					<view class="item-content">
-						<h2>Rhoda Miller</h2>
-						<text><b>18岁</b><b>巨蟹座</b></text>
-					</view>
-				</view>
-				<h3>今天天气很好，很适合拍照呢～</h3>
-				<view class="pic-photo">
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-				</view>
-				<view class="address">拱墅区</view>
-				<view class="time">
-					<view class="time-fl">8秒以前</view>
-					<view class="time-fr">
-						<view class="view-pl"><image src="~@/static/images/other/pl01.png" mode="">26</image></view>
-						<view class="dz" @click="cancle">
-							<view class="dianzan" v-if="show">
-								<text></text>
-								123
-							</view>
-							<view class="dianzan-no" v-else>
-								<text></text>
-								123
-							</view>
-						</view>
-					</view>
-				</view>
-			
-			</view>
-			<view class="list-content">
-				<view class="item">
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-					<view class="item-content">
-						<h2>Rhoda Miller</h2>
-						<text><b>18岁</b><b>巨蟹座</b></text>
-					</view>
-				</view>
-				<h3>今天天气很好，很适合拍照呢～</h3>
-				<view class="pic-photo">
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-				</view>
-				<view class="address">拱墅区</view>
-				<view class="time">
-					<view class="time-fl">8秒以前</view>
-					<view class="time-fr">
-						<view class="view-pl"><image src="~@/static/images/other/pl01.png" mode="">26</image></view>
-						<view class="dz" @click="cancle">
-							<view class="dianzan" v-if="show">
-								<text></text>
-								123
-							</view>
-							<view class="dianzan-no" v-else>
-								<text></text>
-								123
-							</view>
-						</view>
-					</view>
-				</view>
-			
-			</view>
-			<view class="list-content">
-				<view class="item">
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-					<view class="item-content">
-						<h2>Rhoda Miller</h2>
-						<text><b>18岁</b><b>巨蟹座</b></text>
-					</view>
-				</view>
-				<h3>今天天气很好，很适合拍照呢～</h3>
-				<view class="pic-photo">
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-					<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
-				</view>
-				<view class="address">拱墅区</view>
-				
-			</view>
-		</view>
-		<view class="footer">
-			<view class="footer-content">
-				<view class="foot-item foot-item01 on">
-					<view class="foot-bg"></view>
-					<text>附近广场</text>
-				</view>
-				<view class="foot-item foot-middle">
-					<image src="~@/static/images/indexNew/center.png" mode=""></image>
-				</view>
-				<view class="foot-item foot-item02">
-					<view class="foot-bg"></view>
-					<text>活动</text>
+					<view v-if="item.moreShow" class="more" @tap="commentMore">更多消息</view>
 				</view>
 			</view>
 		</view>
+		<uni-popup ref="popup" type="center">
+			<view class="poup">
+				<h2>评论</h2>
+				<view class="viewPanduan">
+					<view class="Viewother">
+						<textarea v-model="comment.content" placeholder-style="color:#999" placeholder="评论内容" />
+						<view class="sc-pictier" @tap="addDiscusse">提交</view>
+					</view>
+				</view>
+				<view class="close" @click="close"><image src="~@/static/images/other/sd.png" mode="" ></image>	</view>
+			</view>
+		</uni-popup>
+		<footerSocial/>
 		<view class="fb">
-			<image src="~@/static/images/other/fb.png" mode="" class="pic"></image>
+			<image src="~@/static/images/other/fb.png" mode="" class="pic" @tap="publish"></image>
 		</view>
+		
 	</view>
 </template>
 
 <script>
+import footerSocial from '../../components/footer/footer.vue'
+import {getTendencyList,zan,pl} from '../../common/api/tendency.js'
+import {getUserGroup} from '../../common/api/group.js'
+import {getAge,getConstellation} from "../../common/api/index.js"
+let user = JSON.parse(uni.getStorageSync("user"));
+
 export default {
 	data() {
 		return {
-			show:true,
+			// show:true,
 			array: ['杭州市', '苏州市', '南京市', '上海市区'],
-			 index: 0
+			index: 0,
+			groups:[],
+			news:[
+			],
+			zan:{
+				userId:"",
+				tendencyId:"",
+				status:""
+			},
+			comment:{
+				userId:"",
+				tendencyId:"",
+				status:"",
+				content:""
+			},
+			query:{
+				groupUnid: ""
+			}
 		};
 	},
 	components: {
-		
+		footerSocial
 	},
 	methods: {
-		cancle(){
-			this.show=!this.show
+		cancle(index,row){
+			this.zan.userId = user.unid
+			this.zan.tendencyId = row.unid
+			this.zan.status = this.news[index].show === true ? "1" : "0"
+			zan(this.zan).then(res => {
+				if(res[1].data.resultCode == "true"){
+					if(this.news[index].show){
+						this.news[index].praiseNum = this.news[index].praiseNum - 1;
+					}else{
+						this.news[index].praiseNum = this.news[index].praiseNum + 1;
+					}
+					this.news[index].show=!this.news[index].show;
+					this.zan.userId = ""
+					this.zan.tendencyId = ""
+					this.zan.status = ""
+				}else{
+					uni.showToast({
+						image: '/static/images/other/close.png',
+						title: '提交失败',
+						duration: 2000
+					});
+				}
+			})
 		},
 		bindPickerChange: function(e) {
 			console.log('picker发送选择改变，携带值为', e.target.value)
 			this.index = e.target.value
+		},
+		publish(){
+			uni.navigateTo({
+				url: '../upload/upload'
+			})
+		},
+		moreGroup(){
+			uni.navigateTo({
+				url: '../interest/interest'
+			})
+		},
+		// getLocation(){
+		// 	uni.getLocation({
+		// 		type: 'wgs84',
+		// 		geocode: true,
+		// 		success: function (res) {
+		// 			console.log('当前位置的经度：' + res.longitude);
+		// 			console.log('当前位置的纬度：' + res.latitude);
+		// 		}
+		// 	});
+		// },
+		getData(){
+			this.news = [];
+			getUserGroup().then(res => {
+				let groups = JSON.parse(decodeURIComponent(res[1].data.resultData));
+				for(let i=0; groups.length > i; i++){
+					this.groups.push({'unid':groups[i].unid,'name':groups[i].name});
+				}
+			});
+			getTendencyList().then(res => {
+				let tendencys = JSON.parse(decodeURIComponent(res[1].data.resultData));
+				let m
+				for(let i=0; i < tendencys.length; i++){
+					// this.news.userImg = tendencys[i].user
+					// this.news.unerName = tendencys[i].user.userName;
+					// this.news.userAge = tendencys[i].user.birthday == undefined ? "未知" : getAge(tendencys[i].user.birthday);
+					// this.news.userConstellation = tendencys[i].user.birthday == undefined ? "未知" : getConstellation(tendencys[i].user.birthday);
+					// this.news.title = tendencys[i].contrnt;
+					let commen = [];
+					if(tendencys[i].discusses.length>0){
+						m = tendencys[i].discusses.length>=2?2:tendencys[i].discusses.length;
+						for(let j=0; j<m; j++){
+							commen.push({
+								"commentUserImg":tendencys[i].discusses[j].user.userPhotos[0].attaPath,
+								"commentContent":tendencys[i].discusses[j].content,
+								"commentCreateDate":tendencys[i].discusses[j].createDate
+							})
+						}
+					}
+					this.news.push({
+						"unid":tendencys[i].unid,
+						"userImg":tendencys[i].user.userPhotos[0].attaPath,
+						"userName":tendencys[i].user.userName,
+						"userAge":tendencys[i].user.birthday == undefined ? "未知" : getAge(tendencys[i].user.birthday),
+						"userConstellation":tendencys[i].user.birthday == undefined ? "未知" : getConstellation(tendencys[i].user.birthday),
+						"title":tendencys[i].content,
+						"address":"",
+						"time":"",
+						"moreShow":tendencys[i].discusses.length>2?true:false,
+						"commentNum":tendencys[i].discusses.length,
+						"praiseNum":tendencys[i].tendencyUserZans.length,
+						"show": tendencys[i].tendencyUserZan != undefined ? true : false,
+						"comments":commen
+					})
+				}
+			});
+		},
+		changeGroup(unid){
+			if(unid === 'all'){
+				this.query.groupUnid = null;
+			}else{
+				this.query.groupUnid = unid;
+			}
+			console.log(this.query)
+		},
+		pl(index,item){
+			this.$refs.popup.open('center');
+			this.comment.userId = user.unid;
+			this.comment.tendencyId = item.unid;
+		},
+		close(){
+			this.comment.userId = "";
+			this.comment.tendencyId = "";
+			this.comment.content = "";
+			// 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
+			this.$refs.popup.close('center');
+		},
+		addDiscusse(){
+			pl(this.comment).then(res => {
+				this.getData();
+				this.close();
+			})
+		},
+		commentMore(){
+			
 		}
+	},
+	onLoad(){
+		// this.getLocation()
+		this.getData()
 	}
 };
 </script>
@@ -493,63 +474,6 @@ export default {
 	vertical-align: top;
 	margin-top: 30rpx;
 }
-.footer{
-	width: 750rpx;
-	height: 190rpx;
-	position: fixed;
-	left:0;
-	bottom: 0;
-	box-sizing: border-box;
-	background-color: #fff;
-}
-.footer-content{
-	width: 100%;
-	background: #FFFFFF;
-	box-shadow: 0rpx 1rpx 0rpx 0rpx #DBDBDB;
-	height: 190rpx;
-	display: flex;
-	 /*设置容器内部容器的排列方向*/	
-	flex-direction: row;
-	flex-wrap:wrap;
-	padding-top: 40rpx;
-	box-sizing: border-box;
-	background: url(~@/static/images/indexNew/foot-bg.png) no-repeat center;
-	background-size: 100% 100%;
-}
-.foot-item{
-	width: 33.33%;
-	text-align: center;
-	color:#000;
-	font-size: 24rpx;
-	height: 34rpx;
-}
-
-.foot-item01 .foot-bg{
-	width: 36rpx;
-	height: 42rpx;
-	background: url(~@/static/images/indexNew/foot01.png) no-repeat center;
-	background-size: 100% 100%;
-	margin: 0 auto 10rpx;
-}
-.foot-item01.on .foot-bg{
-	background: url(~@/static/images/indexNew/foot01-on.png) no-repeat center;
-	background-size: 100% 100%;
-}
-.foot-item02 .foot-bg{
-	background: url(~@/static/images/indexNew/foot01.png) no-repeat center;
-	background-size: 100% 100%;
-	width: 44rpx;
-	height: 38rpx;
-	margin: 0 auto 10rpx;
-}
-.foot-item02.on .foot-bg{
-	background: url(~@/static/images/indexNew/foot02-on.png) no-repeat center;
-	background-size: 100% 100%;
-}
-.foot-middle image{
-	width: 100rpx;
-	height: 100rpx;
-}
 .more{
 	text-align: center;
 	font-size: 24rpx;
@@ -565,7 +489,7 @@ export default {
 	height: 116rpx;
 }
 .top{
-	width: 100%;
+	width: 80%;
 	height: 88rpx;
 	background: #FFFFFF;
 	box-shadow: 0px -1rpx 0px 0px #DDDDDD;
@@ -575,7 +499,7 @@ export default {
 	padding: 0 30rpx;
 }
 .top .fl{
-	width: 20%;
+	width: 23%;
 }
 .top .fl>>>uni-picker{
 	display: inline-block;
@@ -596,7 +520,8 @@ export default {
 	vertical-align: middle;
 }
 .center{
-	width: 70%;
+	white-space: nowrap;
+	width: 60%;
 	margin:o auto;
 	font-size: 28rpx;
 	color:#666;
@@ -604,6 +529,7 @@ export default {
 	text-align: center;
 }
 .center text{
+	display: inline-block;
 	padding:  0 15rpx;
 	display: inline-block;
 	line-height: 88rpx;
@@ -623,6 +549,102 @@ export default {
 	left:50%;
 	margin-left: -19rpx;
 	display: none;
+}
+.poup-content{
+	width: 100%;
+	height: 340px;
+	position: fixed;
+	bottom:0rpx;
+	left:0;
+	background-color:#fff;
+	min-height: 400rpx;
+	border-radius: 50rpx 50rpx 0 0;
+	/* max-height: 60%;
+	overflow: auto; */
+}
+.poup-list{
+	border-bottom: 15rpx solid #ddd;
+}
+.poup-list .poup-item{
+	height: 60rpx;
+	padding: 30rpx;
+	border-bottom: 1rpx solid rgba(221,221,221,0.5);
+	color:#000;
+	font-size: 32rpx;
+	position: relative;
+}
+.poup-list .poup-item image{
+	width: 60rpx;
+	height: 60rpx;
+	vertical-align: middle;
+	margin-right: 35rpx;
+}
+.gn{
+	position: absolute;
+	top:30rpx;
+	right: 0;
+	width: 44rpx;
+	height: 44rpx;
+}
+.poup{
+	width: 640rpx;
+	height: 595rpx;
+	border-radius: 20rpx;
+	background-color: #fff;
+	padding: 50rpx;
+	box-sizing: border-box;
+	text-align: center;
+	position: relative;
+}
+.poup h2{
+	font-weight: 500;
+	color: #333333;
+	font-size: 36rpx;
+	margin-bottom: 30rpx;
+}
+.poup  image{
+	width: 128rpx;
+	height: 128rpx;
+	display: inline-block;
+}
+.poup text{
+	color: #333333;
+	font-size: 30rpx;
+	display: block;
+	text-align: left;
+}
+.sc-pictier{
+	width: 544rpx;
+	height: 98rpx;
+	background: #1BBAE9;
+	border-radius: 24rpx;
+	text-align: center;
+	line-height: 98rpx;
+	color:#fff;
+	font-size: 32rpx;
+	position: absolute;
+	bottom: 40rpx;
+}
+.poup .close{
+	position: absolute;
+	top:30rpx;
+	right: 30rpx;
+}
+.poup .close image{
+	width: 36rpx;
+	height: 36rpx;
+}
+.textCenter{
+	text-align: center !important;
+}
+.ViewAnother .uni-input{
+	height: 90rpx;
+	border-radius: 24rpx;
+	border: 2rpx solid #DBDBDB;
+	text-align: left;
+	padding: 0 40rpx;
+	font-size: 30rpx;
+	margin-top: 20rpx;
 }
 </style>
 

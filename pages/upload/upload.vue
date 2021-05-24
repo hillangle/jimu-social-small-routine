@@ -1,28 +1,93 @@
 <template>
 	<view class="container">
-		<textarea placeholder-style="color:#B5B5B5" placeholder="记录这一刻，多行输入…."/>
+		<textarea placeholder-style="color:#B5B5B5" v-model="form.content" placeholder="记录这一刻，多行输入…."/>
 		<view class="upload">
-			<image src="~@/static/images/other/upload.png" mode=""></image>
+			<uni-file-picker
+				limit="9" 
+				v-model="imageValue" 
+				fileMediatype="image" 
+				mode="grid" 
+				ref="files"
+				style="width: 60%;"
+				@select="select" 
+				@progress="progress" 
+				@success="success" 
+				@fail="fail" 
+				@delete="deleteImg"
+			>
+				<image src="~@/static/images/other/upload.png" mode=""></image>
+			</uni-file-picker>
 		</view>
-		<view class="dw">
+		<!-- <view class="dw">
 			<image src="~@/static/images/other/dw.png" mode=""></image>
 			获取当前定位
-		</view>
+		</view> -->
 	</view>
 </template>
 
 <script>
+import {addTendency} from "../../common/api/tendency.js"
+let user = JSON.parse(uni.getStorageSync("user"));
+	
 export default {
 	data() {
 		return {
-			cur:0
+			cur:0,
+			form:{
+				content:"",
+				userId:user.unid,
+				"images":[]
+			},
+			imageValue:[]
 		};
+	},
+	onNavigationBarButtonTap(e){
+		addTendency(this.form).then(res => {
+			if(res[1].data.resultCode == "true"){
+				uni.showToast({
+					title: '提交成功',
+					duration: 2000
+				});
+				uni.navigateBack();
+			}else{
+				uni.showToast({
+					image: '/static/images/other/close.png',
+					title: '提交失败',
+					duration: 2000
+				});
+			}
+		})
 	},
 	components: {
 		
 	},
 	methods: {
-		
+		// 获取上传状态
+		select(e){
+		    console.log('选择文件：',e)
+		},
+		 // 获取上传进度
+		progress(e){
+		    console.log('上传进度：',e)
+		},
+		// 上传成功
+		success(e){
+		    console.log('上传成功',e);
+			this.form.images.push({
+				"attaName":e.tempFiles[0].name,
+				"attaPath":e.tempFiles[0].url,
+				"fileType":"1",
+				"attaType":e.tempFiles[0].extname
+			});
+		},
+		// 上传失败
+		fail(e){
+		    console.log('上传失败：',e)
+		},
+		deleteImg(e){
+			console.log(e)
+			// this.form.imageValue.delete
+		}
 	}
 };
 </script>

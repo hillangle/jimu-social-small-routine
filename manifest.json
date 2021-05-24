@@ -1,6 +1,6 @@
 {
-    "name" : "uni-app",
-    "appid" : "__UNI__0BD2D34",
+    "name" : "jimu-social-small-routine",
+    "appid" : "__UNI__BB3785E",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -37,23 +37,35 @@
                 ]
             },
             "ios" : {},
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "oauth" : {},
+                "geolocation" : {
+                    "baidu" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "appkey_ios" : "",
+                        "appkey_android" : ""
+                    }
+                }
+            }
         }
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wxdf090756e1472da2",
         "setting" : {
-            "urlCheck" : true
-        }
+            "urlCheck" : false,
+            "minified" : true,
+            "postcss" : true
+        },
+        "permission" : {}
     },
     "h5" : {
-        "title" : "经开区消费券",
+        "title" : "基沐社交平台",
         "router" : {
             "base" : "/coupon",
-			"mode": "history"
+            "mode" : "history"
         },
-		"mode": "history",
+        "mode" : "history",
         "devServer" : {
             "https" : false,
             "proxy" : {

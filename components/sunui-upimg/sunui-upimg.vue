@@ -197,8 +197,8 @@ const upload = function(options) {
 		formData: extra,
 		sslVerify : false ,
 		header : {
-			"token"  : localStorage.getItem("token"),
-			"accessToken" : localStorage.getItem("accessToken") ,
+			"token"  : uni.getStorageSync("token"),
+			"accessToken" : uni.getStorageSync("accessToken") ,
 		},
 		success: function(res) {
 			var data = res.data;

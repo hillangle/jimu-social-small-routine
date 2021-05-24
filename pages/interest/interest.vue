@@ -1,55 +1,72 @@
 <template>
 	<view class="container">
 		<view class="list">
-			<view class="item">
+			<view class="item" v-for="(item,index) in groups" :key="index">
 				<image src="~@/static/images/other/interest01.png" mode="" class="pic"></image>
 				<view class="item-content">
-					<h2>#不怕黑大作战#</h2>
+					<h2>{{item.name}}</h2>
 					<view class="view-text"><image src="~@/static/images/other/hot.png" mode=""></image>17673参与</view>
 				</view>
-				<view class="jr over-jr">已加入</view>
-			</view>
-			<view class="item">
-				<image src="~@/static/images/other/interest02.png" mode="" class="pic"></image>
-				<view class="item-content">
-					<h2>#不怕黑大作战#</h2>
-					<view class="view-text"><image src="~@/static/images/other/hot.png" mode=""></image>17673参与</view>
-				</view>
-				<view class="jr"><text>+</text>加入</view>
-			</view>
-			<view class="item">
-				<image src="~@/static/images/other/interest03.png" mode="" class="pic"></image>
-				<view class="item-content">
-					<h2>#不怕黑大作战#</h2>
-					<view class="view-text">17673参与</view>
-				</view>
-				<view class="jr"><text>+</text>加入</view>
-			</view>
-			<view class="item">
-				<image src="~@/static/images/other/interest04.png" mode="" class="pic"></image>
-				<view class="item-content">
-					<h2>#不怕黑大作战#</h2>
-					<view class="view-text">17673参与</view>
-				</view>
-				<view class="jr"><text>+</text>加入</view>
+				<view class="jr over-jr" v-if="item.show">已加入</view>
+				<view class="jr" v-else><text>+</text>加入</view>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-
+import {getAllGroup,getUserGroup} from '../../common/api/group.js'
 export default {
 	data() {
 		return {
-			
+			query:{
+				status: ""
+			},
+			groups: [
+				
+			]
 		};
 	},
 	components:{
 	        
 	},
 	methods: {
-		
+		getData(){
+			this.query.status = '0';
+			getAllGroup(this.query).then(res => {
+				let groupList = JSON.parse(decodeURIComponent(res[1].data.resultData));
+				let tmp = [];
+				let userTmp = [];
+				for(let i=0; groupList.length > i; i++){
+					tmp.push({'unid':groupList[i].unid,'name':groupList[i].name,'show':false});
+				}
+				getUserGroup().then(res => {
+					if(res[1].data.resultCode === "true"){
+						let userGroupList = JSON.parse(decodeURIComponent(res[1].data.resultData));
+						for(let j=0; userGroupList.length > j; j++){
+							let unid = userGroupList[j].unid;
+							let name = userGroupList[j].name;
+							userTmp.push({"unid":unid,"name":name,"show":true});
+						}
+						console.log(userTmp);
+						for(let m = 0; userTmp.length > m; m++){
+							let userGroup = userTmp[m];
+							for(let n = 0; tmp.length > n; n++){
+								if(userGroup.unid === tmp[n].unid){
+									tmp.splice(n,1);
+									tmp.push(userTmp[m])
+								}
+							}
+						}
+					}
+				})
+				this.groups = tmp
+				console.log(this.groups);
+			})
+		}
+	},
+	onLoad(){
+		this.getData()
 	}
 };
 </script>

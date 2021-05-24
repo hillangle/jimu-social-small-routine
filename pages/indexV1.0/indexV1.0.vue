@@ -1,123 +1,111 @@
 <template>
 	<view class="container">
-		<view class="header-top">
-			<view class="pic">
-				<image src="~@/static/images/indexNew/pic.png" alt="">
-				<view class="photo"><image src="~@/static/images/indexNew/photo.png" alt=""></view>
-			</view>
-			<view class="font">Myrtle Watson</view>
-			<view class="tabs"><text>22岁</text><text>魔羯座</text><text>小标签</text></view>
-			<view class="descript">摩羯座还没有写个性签名～</view>
-			<view class="pictier">
-				<view class="pictier-item pictier-on">
-					<image src="~@/static/images/indexNew/pic01.png" mode=""></image>
-				</view>
-				<view class="pictier-item">
-					<image src="~@/static/images/indexNew/pic02.png" mode=""></image>
-				</view>
-				<view class="pictier-item">
-					<image src="~@/static/images/indexNew/pic03.png" mode=""></image>
-				</view>
-				<view class="pictier-item">
-					<image src="~@/static/images/indexNew/pic04.png" mode=""></image>
-				</view>
-				<view class="pictier-item">
-					<image src="~@/static/images/indexNew/pic05.png" mode=""></image>
-				</view>
-			</view>
-		</view>
+		<header-vue ref="headerSocial"/>
 		<view class="list">
 			<view class="item" v-for="(item,index) in infoList" :key="index">
 				<image :src="item.url" mode=""></image>
 				{{ item.text }}
 			</view>
-		</view>
-		<view class="footer">
-			<view class="footer-content">
-				<view class="foot-item foot-item01 on">
-					<view class="foot-bg"></view>
-					<text>附近广场</text>
-				</view>
-				<view class="foot-item foot-middle">
-					<image src="~@/static/images/indexNew/center.png" mode=""></image>
-				</view>
-				<view class="foot-item foot-item02">
-					<view class="foot-bg"></view>
-					<text>活动</text>
-				</view>
+			<view class="item" @tap="addSocial">
+				<image src="/static/images/indexNew/more.png" mode=""></image>
+				更多
 			</view>
 		</view>
+		<uni-popup id="popupShare" ref="popupShare" type="share" >
+			<uni-popup-share @select="select" v-on:childGetData='getData'></uni-popup-share>
+		</uni-popup>
+		<footerSocial/>
 	</view>
 </template>
 
 <script>
-import {getUserInfo} from "../../common/api/index.js"
+import {getUserSocial} from "../../common/api/index.js"
+import {baseUrl} from "../../common/app.js"
+import headerSocial from '../../components/header/header.vue'
+import uniPopupShare from '../../components/uni-popup/uni-popup-share.vue'
+import footerSocial from '../../components/footer/footer.vue'
+import {Base64} from '../../js_sdk/js-base64/base64.js'
+
 export default {
 	data() {
 		return {
-			infoList: [
-				{
-					url: '/static/images/indexNew/list01.png',
-					text: '微信'
-				},
-				{
-					url: '/static/images/indexNew/list02.png',
-					text: '抖音'
-				},
-				{
-					url: '/static/images/indexNew/list03.png',
-					text: '微博'
-				},
-				{
-					url: '/static/images/indexNew/list04.png',
-					text: '快手'
-				},
-				{
-					url: '/static/images/indexNew/list05.png',
-					text: '抖音'
-				},
-				{
-					url: '/static/images/indexNew/list06.png',
-					text: '微博'
-				},
-				{
-					url: '/static/images/indexNew/list06.png',
-					text: '微信'
-				},
-				{
-					url: '/static/images/indexNew/list03.png',
-					text: '抖音'
-				},
-				{
-					url: '/static/images/indexNew/more.png',
-					text: '更多'
-				},
-			]
+			inputShow:false,
+			infoList: []
 		};
 	},
 	components: {
-		
+		"header-vue": headerSocial, 
+		"uni-popup-share":uniPopupShare,
+		footerSocial
 	},
 	methods: {
 		getData(){
-			getUserInfo().then(res => {
-				console.log(res);
+			this.infoList = [];
+			getUserSocial().then(res => {
+				if(res[1].data.httpCode == '200'){
+					let socials = JSON.parse(res[1].data.resultData);
+					// var Base64 = require('js-base64').Base64;
+					for(let i = 0; socials.length > i; i++){
+						let imgBase = uni.arrayBufferToBase64(new Uint8Array(socials[i].img));
+						this.infoList.push({"url":Base64.decode(imgBase),"text":socials[i].name});
+					}
+				}else{
+					uni.navigateTo({
+						url: '../login/login'
+					})
+				}
 			})
+			this.$nextTick(() => {
+				this.$refs.headerSocial.getUserBaseInfo();
+			})
+		},
+		addSocial(){
+			this.$refs.popupShare.open()
+		},
+		open(){
+			// 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
+			this.$refs.popup.open('center')
+		},
+		close(){
+			// 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
+			this.$refs.popup.close('center')
 		}
+	},
+	onLoad(){
+		this.getData()
 	}
 };
 </script>
 
 <style>
-
-.header-top {
-	background: url(~@/static/images/indexNew/bg.png) no-repeat center;
-	background-size: cover;
-	width: 750rpx;
-	height: 720rpx;
+.scroll{
+	font-size: 30rpx;
 	color: #fff;
-	padding: 138rpx 45rpx 0;
-	box-sizing: border-box;
+
+}
+.header-top>>>._notice{
+	display: inline-block;
+	width: 510rpx;
+	background: rgba(0,0,0,0);
+	font-size: 28rpx;
+	vertical-align: middle;
+}
+.bj {
+	text-align: right;
+	margin: 15rpx 0;
+}
+.bj text{
+	height: 60rpx;
+	background: #1BBAE9;
+	-webkit-border-radius: 8rpx;
+	border-radius: 8rpx;
+	line-height: 60rpx;
+	font-size: 28rpx;
+	text-align: center;
+	display: inline-block;
+	padding: 0 20rpx 0;
+	
+
 }
 .pic{
 	width: 200rpx;
@@ -207,7 +195,7 @@ export default {
 	 /*设置容器内部容器的排列方向*/	
 	flex-direction: row;
 	flex-wrap:wrap;
-	margin-top: 80rpx;
+	margin-top: 40rpx;
 }
 .pictier-item{
 	width: 100rpx;
@@ -226,63 +214,5 @@ export default {
 }
 .list{
 	padding-bottom: 280rpx;
-}
-.footer{
-	width: 750rpx;
-	height: 260rpx;
-	position: fixed;
-	left:0;
-	bottom: 0;
-	padding-top: 70rpx;
-	box-sizing: border-box;
-	background-color: #F2F4F6;
-}
-.footer-content{
-	width: 100%;
-	background: #FFFFFF;
-	box-shadow: 0rpx 1rpx 0rpx 0rpx #DBDBDB;
-	height: 190rpx;
-	display: flex;
-	 /*设置容器内部容器的排列方向*/	
-	flex-direction: row;
-	flex-wrap:wrap;
-	padding-top: 40rpx;
-	box-sizing: border-box;
-	background: url(~@/static/images/indexNew/foot-bg.png) no-repeat center;
-	background-size: 100% 100%;
-}
-.foot-item{
-	width: 33.33%;
-	text-align: center;
-	color:#000;
-	font-size: 24rpx;
-	height: 34rpx;
-}
-
-.foot-item01 .foot-bg{
-	width: 36rpx;
-	height: 42rpx;
-	background: url(~@/static/images/indexNew/foot01.png) no-repeat center;
-	background-size: 100% 100%;
-	margin: 0 auto 10rpx;
-}
-.foot-item01.on .foot-bg{
-	background: url(~@/static/images/indexNew/foot01-on.png) no-repeat center;
-	background-size: 100% 100%;
-}
-.foot-item02 .foot-bg{
-	background: url(~@/static/images/indexNew/foot01.png) no-repeat center;
-	background-size: 100% 100%;
-	width: 44rpx;
-	height: 38rpx;
-	margin: 0 auto 10rpx;
-}
-.foot-item02.on .foot-bg{
-	background: url(~@/static/images/indexNew/foot02-on.png) no-repeat center;
-	background-size: 100% 100%;
-}
-.foot-middle image{
-	width: 100rpx;
-	height: 100rpx;
 }
 </style>

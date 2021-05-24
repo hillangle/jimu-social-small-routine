@@ -1,7 +1,8 @@
 import app from '../app.js'
-export const appLogin = query => {
+
+export const getActivityList = query => {
 	return uni.request({
-		url: 'auth/register',
+		url: 'app/activity/getActivityList',
 		method: "POST",
 		data: query
 	})

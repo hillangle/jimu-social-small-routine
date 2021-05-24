@@ -2,43 +2,77 @@
 	<view class="container">
 		<view class="logo"><image src="~@/static/images/other/logo.png" mode=""></image></view>
 		<view class="tips"><image src="~@/static/images/other/photo.png" mode=""></image>手机号码</view>
-		<view class="uni-content">
+		<view class="uni-content" >
 			<view class="uni-form-item">
 				<view class="title">+86<image src="~@/static/images/other/sj.png" mode=""></image></view>
-				<input class="uni-input"  placeholder="18767589032" />
+				<input class="uni-input" v-model="form.telphone" placeholder="请输入手机号" />
 				<view class="colse"><image src="~@/static/images/other/close.png" mode=""></image></view>
 			</view>
 			<view class="uni-form-item">
 				<view class="title">验证码</view>
-				<input class="uni-input"  placeholder="" />
-				<view class="colse">点击获取</view>
+				<input class="uni-input" v-model="form.smsCode" placeholder="" />
+				<view class="colse" @tap="getSmsCode">点击获取</view>
 			</view>
 			<view class="uni-form-item">
-				<view class="title">激活码</view>
-				<input class="uni-input"  placeholder="" />
+				<view class="title" >激活码</view>
+				<input class="uni-input" v-model="form.cdKey" placeholder="" />
 				
 			</view>
 		</view>
 		<label class="radio">
 			<checkbox value="cb" checked="true" />
-			登录注册即表示同意<text>极目协议</text>和<text>隐私协议</text>
+			登录注册即表示同意<text>基沐协议</text>和<text>隐私协议</text>
 		</label>
-		<button type="default" class="bd-button">确认绑定</button>
+		<button type="default" class="bd-button" @tap="login">确认绑定</button>
 	</view>
 </template>
 
 <script>
+import {appLogin} from "../../common/api/login.js"
+
 export default {
 	data() {
 		return {
-			
+			form: {
+				telphone: "",
+				smsCode: "",
+				cdKey: "",
+				account: "",
+				userRole: "",
+				password: "",
+				username: "",
+				status: ""
+			}
 		};
 	},
 	components:{
 	        
 	},
 	methods: {
-		
+		getSmsCode(e) {
+			this.form.smsCode = 123;
+		},
+		login(e) {
+			this.form.account = this.form.telphone;
+			this.form.userRole = 'ROLE_APPUSER';
+			this.form.password = this.form.cdKey;
+			this.form.username = this.form.telphone;
+			this.form.status = 0;
+			appLogin(this.form).then(res => {
+				if(res[1].data.resultCode == "true"){
+					uni.setStorageSync("token",res[1].data.resultData)
+					uni.navigateTo({
+						url: '../indexV1.0/indexV1.0'
+					})
+				}else{
+					uni.showToast({
+						title: res[1].data.resultMsg,
+						icon:'none',
+						duration: 2000
+					});
+				}
+			})
+		}
 	}
 };
 </script>
