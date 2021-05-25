@@ -51,7 +51,7 @@ export default {
 					}
 				}else{
 					uni.navigateTo({
-						url: '../login/login'
+						url: '../../pages/login/login'
 					})
 				}
 			})

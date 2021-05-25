@@ -50,7 +50,7 @@
 
 <script>
 import {editUserInfo} from "../../common/api/index.js"
-let user = JSON.parse(uni.getStorageSync("user"));
+var user;
 
 export default {
 	data() {
@@ -184,6 +184,13 @@ export default {
 		}
 	},
 	created(){
+		if(uni.getStorageSync("user") == undefined || uni.getStorageSync("user") == ''){
+			uni.navigateTo({
+				url: '../../pages/login/login'
+			})
+		}else{
+			user = JSON.parse(uni.getStorageSync("user"));			
+		}
 		this.getData();
 	}
 }

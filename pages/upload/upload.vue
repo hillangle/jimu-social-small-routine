@@ -27,7 +27,7 @@
 
 <script>
 import {addTendency} from "../../common/api/tendency.js"
-let user = JSON.parse(uni.getStorageSync("user"));
+var user;
 	
 export default {
 	data() {
@@ -35,13 +35,14 @@ export default {
 			cur:0,
 			form:{
 				content:"",
-				userId:user.unid,
+				userId:"",
 				"images":[]
 			},
 			imageValue:[]
 		};
 	},
 	onNavigationBarButtonTap(e){
+		this.form.userId = user.unid;
 		addTendency(this.form).then(res => {
 			if(res[1].data.resultCode == "true"){
 				uni.showToast({
@@ -87,6 +88,15 @@ export default {
 		deleteImg(e){
 			console.log(e)
 			// this.form.imageValue.delete
+		}
+	},
+	onLoad(){
+		if(uni.getStorageSync("user") == undefined || uni.getStorageSync("user") == ''){
+			uni.navigateTo({
+				url: '../../pages/login/login'
+			})
+		}else{
+			user = JSON.parse(uni.getStorageSync("user"));			
 		}
 	}
 };

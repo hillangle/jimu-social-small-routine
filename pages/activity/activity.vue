@@ -22,6 +22,7 @@
 import footerSocial from '@/components/footer/footer.vue'
 import {getActivityList} from '../../common/api/activity.js'
 import {Base64} from '../../js_sdk/js-base64/base64.js'
+var user;
 
 export default {
 	data() {
@@ -62,6 +63,13 @@ export default {
 		}
 	},
 	onLoad(){
+		if(uni.getStorageSync("user") == undefined || uni.getStorageSync("user") == ''){
+			uni.navigateTo({
+				url: '../../pages/login/login'
+			})
+		}else{
+			user = JSON.parse(uni.getStorageSync("user"));			
+		}
 		this.getData()
 	}
 };

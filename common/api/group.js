@@ -15,3 +15,19 @@ export const getUserGroup = query => {
 		data: query
 	})
 }
+
+export const addGroup = query => {
+	return uni.request({
+		url: 'app/group/addGroup',
+		method: "POST",
+		data: query
+	})
+}
+
+export const outGroup = query => {
+	return uni.request({
+		url: 'app/group/outGroup',
+		method: "POST",
+		data: query
+	})
+}

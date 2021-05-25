@@ -84,7 +84,7 @@ import footerSocial from '../../components/footer/footer.vue'
 import {getTendencyList,zan,pl} from '../../common/api/tendency.js'
 import {getUserGroup} from '../../common/api/group.js'
 import {getAge,getConstellation} from "../../common/api/index.js"
-let user = JSON.parse(uni.getStorageSync("user"));
+var user;
 
 export default {
 	data() {
@@ -185,7 +185,7 @@ export default {
 						m = tendencys[i].discusses.length>=2?2:tendencys[i].discusses.length;
 						for(let j=0; j<m; j++){
 							commen.push({
-								"commentUserImg":tendencys[i].discusses[j].user.userPhotos[0].attaPath,
+								"commentUserImg":tendencys[i].discusses[j].user.userPhotos[0] == undefined ? '' : tendencys[i].discusses[j].user.userPhotos[0].attaPath,
 								"commentContent":tendencys[i].discusses[j].content,
 								"commentCreateDate":tendencys[i].discusses[j].createDate
 							})
@@ -193,7 +193,7 @@ export default {
 					}
 					this.news.push({
 						"unid":tendencys[i].unid,
-						"userImg":tendencys[i].user.userPhotos[0].attaPath,
+						"userImg":tendencys[i].user.userPhotos[0] == undefined ? '' : tendencys[i].user.userPhotos[0].attaPath,
 						"userName":tendencys[i].user.userName,
 						"userAge":tendencys[i].user.birthday == undefined ? "未知" : getAge(tendencys[i].user.birthday),
 						"userConstellation":tendencys[i].user.birthday == undefined ? "未知" : getConstellation(tendencys[i].user.birthday),
@@ -237,9 +237,25 @@ export default {
 		},
 		commentMore(){
 			
+		},
+		updateUserGroup(){
+			this.groups = [];
+			getUserGroup().then(res => {
+				let groups = JSON.parse(decodeURIComponent(res[1].data.resultData));
+				for(let i=0; groups.length > i; i++){
+					this.groups.push({'unid':groups[i].unid,'name':groups[i].name});
+				}
+			});
 		}
 	},
 	onLoad(){
+		if(uni.getStorageSync("user") == undefined || uni.getStorageSync("user") == ''){
+			uni.navigateTo({
+				url: '../../pages/login/login'
+			})
+		}else{
+			user = JSON.parse(uni.getStorageSync("user"));			
+		}
 		// this.getLocation()
 		this.getData()
 	}
