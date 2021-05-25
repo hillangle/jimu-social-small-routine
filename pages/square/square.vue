@@ -25,8 +25,8 @@
 					</view>
 				</view>
 				<h3>{{item.title}}</h3>
-				<view class="pic-photo" v-for="(photo,index) in item.attas">
-					<image :src="photo.attaPath" mode="" class="pic"></image>
+				<view class="pic-photo">
+					<image :src="photo.attaPath" mode="" class="pic" v-for="(photo,index) in item.attas"></image>
 					<!-- <image src="~@/static/images/other/interest01.png" mode="" class="pic"></image> -->
 				</view>
 				<view class="address">{{item.address}}</view>
@@ -204,7 +204,8 @@ export default {
 						"commentNum":tendencys[i].discusses.length,
 						"praiseNum":tendencys[i].tendencyUserZans.length,
 						"show": tendencys[i].tendencyUserZan != undefined ? true : false,
-						"comments":commen
+						"comments":commen,
+						"attas":tendencys[i].attas
 					})
 				}
 			});
