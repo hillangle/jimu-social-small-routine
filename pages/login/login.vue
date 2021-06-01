@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {appLogin} from "../../common/api/login.js"
+import {appLogin,getSmsCode} from "../../common/api/login.js"
 
 export default {
 	data() {
@@ -42,6 +42,10 @@ export default {
 				password: "",
 				username: "",
 				status: ""
+			},
+			smsCode:"",
+			sms:{
+				telphone:""
 			}
 		};
 	},
@@ -49,29 +53,58 @@ export default {
 	        
 	},
 	methods: {
-		getSmsCode(e) {
-			this.form.smsCode = 123;
-		},
+		/* getSmsCode(e) {
+			if(this.form.telphone != ''){
+				this.sms.telphone = this.form.telphone;
+				getSmsCode(this.sms).then(res => {
+					if(res[1].data.resultCode == "true"){
+						let code = JSON.parse(res[1].data.resultData);
+						this.smsCode = code.code;
+					}else{
+						uni.showToast({
+							title: res[1].data.resultMsg,
+							icon:'none',
+							duration: 2000
+						});
+					}
+				})
+			}else{
+				uni.showToast({
+					title: '请输入手机号',
+					icon:'none',
+					duration: 2000
+				});
+			}
+		}, */
 		login(e) {
-			this.form.account = this.form.telphone;
-			this.form.userRole = 'ROLE_APPUSER';
-			this.form.password = this.form.cdKey;
-			this.form.username = this.form.telphone;
-			this.form.status = 0;
-			appLogin(this.form).then(res => {
-				if(res[1].data.resultCode == "true"){
-					uni.setStorageSync("token",res[1].data.resultData)
-					uni.navigateTo({
-						url: '../indexV1.0/indexV1.0'
-					})
-				}else{
-					uni.showToast({
-						title: res[1].data.resultMsg,
-						icon:'none',
-						duration: 2000
-					});
-				}
-			})
+			console.log(this.smsCode)
+			// if(this.form.smsCode == this.smsCode){
+				this.form.account = this.form.telphone;
+				this.form.userRole = 'ROLE_APPUSER';
+				this.form.password = this.form.cdKey;
+				this.form.username = this.form.telphone;
+				this.form.status = 0;
+				appLogin(this.form).then(res => {
+					if(res[1].data.resultCode == "true"){
+						uni.setStorageSync("token",res[1].data.resultData)
+						uni.navigateTo({
+							url: '../indexV1.0/indexV1.0'
+						})
+					}else{
+						uni.showToast({
+							title: res[1].data.resultMsg,
+							icon:'none',
+							duration: 2000
+						});
+					}
+				})
+			// }else{
+			// 	uni.showToast({
+			// 		title: '验证码错误',
+			// 		icon:'none',
+			// 		duration: 2000
+			// 	});
+			// }
 		}
 	}
 };

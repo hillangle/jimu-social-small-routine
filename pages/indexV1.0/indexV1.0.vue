@@ -45,9 +45,11 @@ export default {
 				if(res[1].data.httpCode == '200'){
 					let socials = JSON.parse(res[1].data.resultData);
 					// var Base64 = require('js-base64').Base64;
-					for(let i = 0; socials.length > i; i++){
-						let imgBase = uni.arrayBufferToBase64(new Uint8Array(socials[i].img));
-						this.infoList.push({"url":Base64.decode(imgBase),"text":socials[i].name});
+					if(socials != undefined){
+						for(let i = 0; socials.length > i; i++){
+							let imgBase = uni.arrayBufferToBase64(new Uint8Array(socials[i].img));
+							this.infoList.push({"url":Base64.decode(imgBase),"text":socials[i].name});
+						}
 					}
 				}else{
 					uni.navigateTo({

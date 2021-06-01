@@ -22,6 +22,25 @@
 			}
 		},
 		{
+			"path": "pages/square/squareDetail",
+			"style": {
+				"navigationBarTitleText": "动态详情",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "&#xe607;",
+							"fontSrc": "/static/iconfont.ttf",
+							"fontSize": "16px",
+							"color": "#fff",
+							"float": "left"
+						}]
+					}
+				}
+			}
+		},
+		{
 			"path": "pages/interest/interest",
 			"style": {
 				"navigationBarTitleText": "兴趣小组",

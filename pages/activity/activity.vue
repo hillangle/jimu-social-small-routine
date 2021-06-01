@@ -4,7 +4,7 @@
 			<view class="title">活动列表</view>
 			<!-- <image src="~@/static/images/other/sx.png" mode="" class="pic"></image> -->
 		</view>
-		<view class="list" v-for="(item,index) in activitys" :key="index">
+		<view class="list" v-for="(item,index) in activitys" :key="index" @tap="detail(item)">
 			<view class="item">
 				<image :src="item.img" mode="" class="pic"></image>
 				<view class="item-content">
@@ -49,8 +49,9 @@ export default {
 						this.activitys.push({
 							"img":'data:image/png;base64,' + imgBase,
 							"name":activitys[i].name,
-							"activityTime":activitys[i].activityTime,
-							"content":activitys[i].content
+							"activityTime":activitys[i].activeTime,
+							"content":activitys[i].content,
+							"unid":activitys[i].unid
 						});
 					}
 					console.log(this.activitys);
@@ -59,6 +60,12 @@ export default {
 						url: '/pages/login/login.vue'
 					})
 				}
+			})
+		},
+		detail(item){
+			console.log(item)
+			uni.navigateTo({
+				url: '../../pages/activityDetail/activityDetail?unid='+item.unid
 			})
 		}
 	},

@@ -16,7 +16,7 @@
 			<view class="fr"><image src="~@/static/images/other/more.png" mode="" class="pic" @tap="moreGroup"></image></view>
 		</view>
 		<view class="list">
-			<view class="list-content" v-for="(item,index) in news" :key="index">
+			<view class="list-content" v-for="(item,index) in news" :key="index" @tap="detail(item.unid)">
 				<view class="item">
 					<image :src="item.userImg" mode="" class="pic"></image>
 					<view class="item-content">
@@ -171,7 +171,7 @@ export default {
 					this.groups.push({'unid':groups[i].unid,'name':groups[i].name});
 				}
 			});
-			getTendencyList().then(res => {
+			getTendencyList(this.query).then(res => {
 				let tendencys = JSON.parse(decodeURIComponent(res[1].data.resultData));
 				let m
 				for(let i=0; i < tendencys.length; i++){
@@ -247,6 +247,11 @@ export default {
 					this.groups.push({'unid':groups[i].unid,'name':groups[i].name});
 				}
 			});
+		},
+		detail(unid){
+			uni.navigateTo({
+				url: '../../pages/square/squareDetail?unid='+unid
+			})
 		}
 	},
 	onLoad(){

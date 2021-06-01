@@ -73,6 +73,7 @@ export default {
 	},
 	onNavigationBarButtonTap(e){
 		editUserInfo(this.form).then(res => {
+			console.log(JSON.parse(res[1].data))
 			if(res[1].data.resultCode == "true"){
 				uni.showToast({
 					title: '提交成功',

@@ -6,7 +6,22 @@
 		<view class="bj" @tap="editUser"><text>编辑材料</text></view>
 		<view class="pic">
 			<image :src="user.image" alt="">
-			<view class="photo"><image src="~@/static/images/indexNew/photo.png" alt=""></view>
+			<view class="photo">
+				<!-- <image src="~@/static/images/indexNew/photo.png" alt=""> -->
+				<uni-file-picker
+					limit="1" 
+					fileMediatype="image" 
+					v-model="imageValue" 
+					mode="grid" 
+					ref="files"
+					@select="select"
+					@progress="progress" 
+					@success="success" 
+					@fail="fail" 
+					@delete="deleteImg"
+				>
+				</uni-file-picker>
+			</view>
 		</view>
 		<view class="font" v-model="user.userName">{{user.userName}}</view>
 		<view class="tabs"><text>{{user.age}}岁</text><text>{{user.constellation}}</text></view>
@@ -35,7 +50,8 @@ export default {
 				image: "",
 				photos: []
 			},
-			banner:"../../static/images/indexNew/bg.png"
+			banner:"../../static/images/indexNew/bg.png",
+			imageValue:[]
 		};
 	},
 	components: {
@@ -75,6 +91,32 @@ export default {
 			uni.navigateTo({
 				url: '../../pages/edit/edit'
 			})
+		},
+		// 获取上传状态
+		select(e){
+		    console.log('选择文件：',e)
+		},
+		 // 获取上传进度
+		progress(e){
+		    console.log('上传进度：',e)
+		},
+		// 上传成功
+		success(e){
+		    console.log('上传成功',e);
+			this.form.images.push({
+				"attaName":e.tempFiles[0].name,
+				"attaPath":e.tempFiles[0].url,
+				"fileType":"1",
+				"attaType":e.tempFiles[0].extname
+			});
+		},
+		// 上传失败
+		fail(e){
+		    console.log('上传失败：',e)
+		},
+		deleteImg(e){
+			console.log(e)
+			// this.form.imageValue.delete
 		}
 	}
 };
@@ -139,7 +181,8 @@ export default {
 		position: absolute;
 		right: -20rpx;
 		bottom: -20rpx;
-		background: #1BBAE9;
+		background-image: url(../../static/images/indexNew/photo.png);
+		background-size: contain;
 	}
 	.list{
 		display: flex;

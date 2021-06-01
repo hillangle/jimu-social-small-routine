@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="list">
 			<view class="item">
-				<image src="~@/static/images/other/act01.png" mode="" class="pic"></image>
+				<image :src="img" mode="" class="pic"></image>
 				<view class="item-content">
 					<h2>包豪斯四个问题《总体艺术》影响及不同的选择</h2>
 					<h3><text>我要参加</text></h3>
@@ -37,14 +37,20 @@
 export default {
 	data() {
 		return {
-			
+			"img":'data:image/png;base64,' + imgBase,
+			"name":activitys[i].name,
+			"activityTime":activitys[i].activeTime,
+			"content":activitys[i].content,
+			"unid":activitys[i].unid
 		};
 	},
 	components:{
-	        
 	},
 	methods: {
 		
+	},
+	onLoad(option) {
+		console.log(option.unid)
 	}
 };
 </script>
